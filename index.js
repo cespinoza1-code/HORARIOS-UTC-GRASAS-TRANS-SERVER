@@ -11,13 +11,17 @@ const CHANNEL_MEXICO = '1521244733714858176';
 const CHANNEL_ARGENTINA = '1521244787414405120';
 const CHANNEL_UTC = '1521244832889311403';
 
-client.once('ready', () => {
+client.once('ready', async () => {
 
     console.log(`✅ Bot conectado como ${client.user.tag}`);
 
-    actualizarHoras();
+    await actualizarHoras();
 
-    setInterval(actualizarHoras, 60000);
+    console.log("Proceso terminado.");
+
+    client.destroy();
+
+    process.exit(0);
 
 });
 
