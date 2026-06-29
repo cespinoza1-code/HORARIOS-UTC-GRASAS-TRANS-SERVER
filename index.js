@@ -6,26 +6,14 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds]
 });
 
-// ===== IDs DE LOS CANALES =====
+// IDs de los canales
 const CHANNEL_MEXICO = '1521244733714858176';
 const CHANNEL_ARGENTINA = '1521244787414405120';
 const CHANNEL_UTC = '1521244832889311403';
 
-client.once('ready', async () => {
+client.once('clientReady', async () => {
 
     console.log(`✅ Bot conectado como ${client.user.tag}`);
-
-    await actualizarHoras();
-
-    console.log("Proceso terminado.");
-
-    client.destroy();
-
-    process.exit(0);
-
-});
-
-async function actualizarHoras() {
 
     try {
 
@@ -60,16 +48,22 @@ async function actualizarHoras() {
         await canalArgentina.setName(`🇦🇷┃${argentina}`);
         await canalUTC.setName(`🌍┃${utc}`);
 
-        console.log("Horas actualizadas");
+        console.log("✅ Horarios actualizados correctamente.");
 
     } catch (error) {
-        console.error(error);
+
+        console.error("❌ Error:", error);
+
+    } finally {
+
+        client.destroy();
+        process.exit(0);
+
     }
 
-}
+});
 
-console.log("Token cargado:", !!process.env.TOKEN);
-
-client.login(process.env.TOKEN)
-  .then(() => console.log("Login enviado"))
-  .catch(err => console.error("Error al iniciar sesión:", err));
+client.login(process.env.TOKEN).catch(error => {
+    console.error("❌ Error al iniciar sesión:", error);
+    process.exit(1);
+});
